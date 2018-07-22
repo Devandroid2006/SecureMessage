@@ -4,7 +4,7 @@ import android.os.Bundle
 import devandroid.com.library.CipherImpl
 import devandroid.com.library.KeyStoreImpl
 import devandroid.com.library.SecureMessageImpl
-import devandroid.com.library.Utility
+import devandroid.com.library.SecureUtils
 
 class MainActivity : BaseActivity() {
 
@@ -17,7 +17,7 @@ class MainActivity : BaseActivity() {
         val securePreferences = SecureMessageImpl()
         iKeyStore.initialize(this)
         iCipher.initialize()
-        securePreferences.initialize(Utility.getSharedPrefs(this, "SamplePres"), iKeyStore, iCipher)
+        securePreferences.initialize(SecureUtils.getSharedPrefs(this, "SamplePres"), iKeyStore, iCipher)
 
         securePreferences.putString("KEY", "Value");
 

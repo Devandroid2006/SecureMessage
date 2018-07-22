@@ -27,6 +27,9 @@ class SecureMessageImpl : ISecureMessage {
         if (!mIKeyStore.isExists(mAliasKey)) {
             mIKeyStore.generateKeyPair(mAliasKey)
         }
+
+        iCipher.initialize();
+//        iKeyStore.initialize()
     }
 
     override fun putString(key: String, value: String) {
