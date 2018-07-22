@@ -15,6 +15,11 @@ import java.security.PrivateKey
 import java.util.*
 import javax.security.auth.x500.X500Principal
 
+/**
+ * used for keypair management
+ *
+ * android api below 23 supports only RSA Algorithm with androidKeystore
+ */
 class KeyStoreImpl : IKeyStore {
 
     private lateinit var mKeyStore: KeyStore;

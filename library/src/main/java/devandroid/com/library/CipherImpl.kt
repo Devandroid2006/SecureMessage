@@ -5,6 +5,9 @@ import devandroid.com.library.internal.ICipher
 import java.security.KeyPair
 import javax.crypto.Cipher
 
+/**
+ * used for encryption and decryption
+ */
 class CipherImpl : ICipher {
 
     private lateinit var mCipher: Cipher;

@@ -1,13 +1,12 @@
 package com.devandroid.securemessage
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import devandroid.com.library.CipherImpl
 import devandroid.com.library.KeyStoreImpl
 import devandroid.com.library.SecureMessageImpl
 import devandroid.com.library.Utility
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
