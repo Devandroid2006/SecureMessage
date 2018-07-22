@@ -21,10 +21,14 @@ class KeyStoreImpl : IKeyStore {
 
     private lateinit var mContext: Context;
 
-    override fun init(context: Context) {
+    override fun initialize(context: Context) {
         mKeyStore = KeyStore.getInstance(IKeyStore.PROVIDER)
         mKeyStore.load(null)
         mContext = context
+    }
+
+    override fun isExists(alias: String): Boolean {
+        return mKeyStore.isKeyEntry(alias)
     }
 
     override fun generateKeyPair(alias: String): KeyPair? {

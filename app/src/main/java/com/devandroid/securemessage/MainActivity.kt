@@ -4,29 +4,24 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import devandroid.com.library.CipherImpl
 import devandroid.com.library.KeyStoreImpl
+import devandroid.com.library.SecureMessageImpl
+import devandroid.com.library.Utility
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val keyStoreImpl = KeyStoreImpl();
-        val cipherImpl = CipherImpl();
 
-        cipherImpl.init();
-        keyStoreImpl.init(this)
+        val iKeyStore = KeyStoreImpl();
+        val iCipher = CipherImpl();
+        val securePreferences = SecureMessageImpl()
+        iKeyStore.initialize(this)
+        iCipher.initialize()
+        securePreferences.initialize(Utility.getSharedPrefs(this, "SamplePres"), iKeyStore, iCipher)
 
-        val alias = "masterKey"
+        securePreferences.putString("KEY", "Value");
 
-        keyStoreImpl.generateKeyPair(alias)
-
-        val keyPair = keyStoreImpl.generateKeyPair(alias)
-
-        val encrypt = cipherImpl.encrypt(keyPair, "Devaraja")
-
-        val decrypt = cipherImpl.decrypt(keyPair, encrypt)
-
-        println("Encrypt {$encrypt}")
-        println("Decrypt {$decrypt}")
+        println(securePreferences.getString("KEY", "Default"))
     }
 }

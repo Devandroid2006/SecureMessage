@@ -9,7 +9,7 @@ class CipherImpl : ICipher {
 
     private lateinit var mCipher: Cipher;
 
-    override fun init() {
+    override fun initialize() {
         mCipher = Cipher.getInstance(ICipher.TRANSFORMATION)
     }
 

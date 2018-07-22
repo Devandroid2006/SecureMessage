@@ -6,13 +6,15 @@ import java.security.KeyPair
 interface IKeyStore {
 
     companion object {
-        const val PROVIDER = "AndroidKeyStore";
+        const val PROVIDER = "AndroidKeyStore"
         const val ALGORITHM = "RSA"
     }
 
-    fun init(context: Context);
+    fun initialize(context: Context)
 
-    fun generateKeyPair(alias: String): KeyPair?;
+    fun generateKeyPair(alias: String): KeyPair?
 
-    fun getKeyPair(alias: String): KeyPair?;
+    fun getKeyPair(alias: String): KeyPair?
+
+    fun isExists(alias: String): Boolean
 }

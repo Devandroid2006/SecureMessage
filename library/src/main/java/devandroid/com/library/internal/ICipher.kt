@@ -8,7 +8,7 @@ interface ICipher {
         const val TRANSFORMATION = "RSA/ECB/PKCS1Padding"
     }
 
-    fun init();
+    fun initialize();
 
     fun encrypt(keyPair: KeyPair?, message: String): String
 
