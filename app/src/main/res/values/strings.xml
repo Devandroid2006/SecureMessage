@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">SecureMessage</string>
+
+    <string name="err">
+        Verification of license key failed. Possible reason:
+        &lt;br/>\u2022 invalid License key/serial number
+        &lt;br/>\u2022 Usage count is over
+        &lt;br/>\u2022 licenseKey has expired
+        &lt;br/>\u2022 activation key is used by another user (company)
+    </string>
+
+
 </resources>
