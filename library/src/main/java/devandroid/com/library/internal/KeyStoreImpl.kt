@@ -1,4 +1,4 @@
-package devandroid.com.library
+package devandroid.com.library.internal
 
 import android.annotation.TargetApi
 import android.content.Context
@@ -6,7 +6,8 @@ import android.os.Build
 import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import devandroid.com.library.internal.IKeyStore
+import devandroid.com.library.IKeyStore
+import timber.log.Timber
 import java.math.BigInteger
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -38,12 +39,14 @@ class KeyStoreImpl : IKeyStore {
 
     override fun generateKeyPair(alias: String): KeyPair? {
         val keyPairGenerator = KeyPairGenerator.getInstance(IKeyStore.ALGORITHM, IKeyStore.PROVIDER)
-        if (Build.VERSION_CODES.KITKAT > Build.VERSION.SDK_INT) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             initForMarshaMallow(keyPairGenerator, alias)
         } else {
             initForKitKat(keyPairGenerator, alias)
         }
-        return keyPairGenerator.generateKeyPair();
+        val keyPair = keyPairGenerator.generateKeyPair()
+        Timber.d(keyPair.toString())
+        return keyPair;
     }
 
     override fun getKeyPair(alias: String): KeyPair? {

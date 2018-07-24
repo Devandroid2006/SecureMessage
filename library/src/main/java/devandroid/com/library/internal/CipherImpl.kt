@@ -1,7 +1,7 @@
-package devandroid.com.library
+package devandroid.com.library.internal
 
 import android.util.Base64
-import devandroid.com.library.internal.ICipher
+import devandroid.com.library.ICipher
 import java.security.KeyPair
 import javax.crypto.Cipher
 

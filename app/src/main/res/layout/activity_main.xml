@@ -43,16 +43,6 @@
         android:minLines="5" />
 
     <android.support.v7.widget.AppCompatTextView
-        android:id="@+id/encryptedTV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="#f1f1f1"
-        android:hint="cipher text"
-        android:maxLines="8"
-        android:minLines="8" />
-
-    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/decryptedTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package devandroid.com.library.internal
+package devandroid.com.library
 
 import android.content.SharedPreferences
 
@@ -81,17 +81,4 @@ interface ISecureMessage {
      */
     fun getLong(key: String, default: Long): Long
 
-    /**
-     * generic message encrypt
-     * key:String reference for the value
-     * value to be saved as encrypted
-     */
-    fun putEncryptedMessage(key: String, value: String)
-
-    /**
-     * generic message decrypt
-     * key:String reference for the value
-     *  return null value if key doesn't exist
-     */
-    fun getDecryptedMessage(key: String): String
 }

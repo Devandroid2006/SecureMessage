@@ -1,10 +1,11 @@
-package devandroid.com.library
+package devandroid.com.library.internal
 
 import android.content.SharedPreferences
-import devandroid.com.library.internal.ICipher
-import devandroid.com.library.internal.IKeyStore
-import devandroid.com.library.internal.ISecureMessage
+import devandroid.com.library.ICipher
+import devandroid.com.library.IKeyStore
+import devandroid.com.library.ISecureMessage
 import org.json.JSONArray
+import timber.log.Timber
 
 class SecureMessageImpl : ISecureMessage {
 
@@ -27,9 +28,6 @@ class SecureMessageImpl : ISecureMessage {
         if (!mIKeyStore.isExists(mAliasKey)) {
             mIKeyStore.generateKeyPair(mAliasKey)
         }
-
-        iCipher.initialize();
-//        iKeyStore.initialize()
     }
 
     override fun putString(key: String, value: String) {
@@ -37,69 +35,79 @@ class SecureMessageImpl : ISecureMessage {
     }
 
     override fun getString(key: String, default: String): String? {
-        return mSharedPrefs.getString(key, default)
+        val decryptedMessage = getDecryptedMessage(key)
+        return if (null == decryptedMessage) default else decryptedMessage
     }
 
     override fun putInt(key: String, value: Int) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        putEncryptedMessage(key, value.toString())
     }
 
     override fun getInt(key: String, default: Int): Int {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val decryptedMessage = getDecryptedMessage(key)
+        return if (null == decryptedMessage) default else decryptedMessage.toInt()
     }
 
     override fun putBoolean(key: String, value: Boolean) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        putEncryptedMessage(key, value.toString())
     }
 
     override fun getBoolean(key: String, default: Boolean): Boolean {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val decryptedMessage = getDecryptedMessage(key)
+        return if (null == decryptedMessage) default else decryptedMessage.toBoolean()
     }
 
     override fun putDouble(key: String, value: Double) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        putEncryptedMessage(key, value.toString())
     }
 
     override fun getDouble(key: String, default: Double): Double {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val decryptedMessage = getDecryptedMessage(key)
+        return if (null == decryptedMessage) default else decryptedMessage.toDouble()
     }
 
     override fun putFloat(key: String, value: Float) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        putEncryptedMessage(key, value.toString())
     }
 
     override fun getFloat(key: String, default: Float): Float {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val decryptedMessage = getDecryptedMessage(key)
+        return if (null == decryptedMessage) default else decryptedMessage.toFloat()
     }
 
     override fun putLong(key: String, value: Long) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        putEncryptedMessage(key, value.toString())
     }
 
     override fun getLong(key: String, default: Long): Long {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        val decryptedMessage = getDecryptedMessage(key)
+        return if (null == decryptedMessage) default else decryptedMessage.toLong()
     }
 
-    override fun putEncryptedMessage(key: String, value: String) {
+    private fun putEncryptedMessage(key: String, value: String) {
         mEditor.putString(key, prepareEncryptedJsonArray(value).toString());
         mEditor.commit()
     }
 
-    override fun getDecryptedMessage(key: String): String {
+    private fun getDecryptedMessage(key: String): String {
         val keyPair = mIKeyStore.getKeyPair(mAliasKey)
-        val encrypt = mSharedPrefs.getString(key, null)
-        return prepareDecryptedMessage(mICipher.decrypt(keyPair, encrypt))
+        val encrypt = JSONArray(mSharedPrefs.getString(key, null))
+
+        Timber.d("{$encrypt}")
+        return prepareDecryptedMessage(mICipher.decrypt(keyPair, encrypt.getString(0)))
     }
 
     private fun prepareEncryptedJsonArray(value: String): JSONArray {
         val keyPair = mIKeyStore.getKeyPair(mAliasKey)
         val encrypt = mICipher.encrypt(keyPair, value)
         val jsonArray = JSONArray();
+        jsonArray.put(encrypt)
+        Timber.d("Encrypted :{$encrypt}")
         return jsonArray;
     }
 
     private fun prepareDecryptedMessage(value: String): String {
-        val jsonArray = JSONArray(value);
-        return "";
+        Timber.d("Decrypt :{$value}")
+        return value;
     }
 }

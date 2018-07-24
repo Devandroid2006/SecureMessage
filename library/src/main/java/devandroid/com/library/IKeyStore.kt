@@ -1,4 +1,4 @@
-package devandroid.com.library.internal
+package devandroid.com.library
 
 import android.content.Context
 import java.security.KeyPair
