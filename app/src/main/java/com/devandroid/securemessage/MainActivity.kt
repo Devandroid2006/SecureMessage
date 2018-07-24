@@ -7,6 +7,7 @@ import android.widget.Toast
 import devandroid.com.library.ISecureMessage
 import devandroid.com.library.utils.SecureUtils
 import kotlinx.android.synthetic.main.activity_main.*
+import timber.log.Timber
 
 class MainActivity : BaseActivity(), View.OnClickListener {
 
@@ -16,6 +17,19 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initialize()
+
+        //sample test
+        mISecureMessage.putBoolean("boolean", true)
+
+        mISecureMessage.putBoolean("boolean", false)
+
+        Timber.d("Message Boolean:" + mISecureMessage.getBoolean("boolean", false))
+
+        mISecureMessage.putLong("Long", 1000)
+
+        mISecureMessage.putLong("Long", 200)
+
+        Timber.d("Message Long:" + mISecureMessage.getLong("Long", 2))
     }
 
     private fun initialize() {
