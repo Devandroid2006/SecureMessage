@@ -103,7 +103,7 @@ class SecureMessageImpl : ISecureMessage {
         val jsonArray = JSONArray();
         for (str in chunked) {
             println("Chunk :$str")
-            val encrypt = mICipher.encrypt(keyPair, value)
+            val encrypt = mICipher.encrypt(keyPair, str)
             jsonArray.put(encrypt)
             Timber.d("Encrypted :{$encrypt}")
         }
