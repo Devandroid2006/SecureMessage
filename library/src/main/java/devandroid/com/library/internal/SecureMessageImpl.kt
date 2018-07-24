@@ -3,6 +3,7 @@ package devandroid.com.library.internal
 import android.content.SharedPreferences
 import devandroid.com.library.ICipher
 import devandroid.com.library.IKeyStore
+import devandroid.com.library.IKeyStore.Companion.MESSAGE_BLOCK
 import devandroid.com.library.ISecureMessage
 import org.json.JSONArray
 import timber.log.Timber
@@ -85,29 +86,37 @@ class SecureMessageImpl : ISecureMessage {
     }
 
     private fun putEncryptedMessage(key: String, value: String) {
+        Timber.d("Message to be encrypt :$value, length :${value.length}")
         mEditor.putString(key, prepareEncryptedJsonArray(value).toString());
         mEditor.commit()
     }
 
     private fun getDecryptedMessage(key: String): String {
-        val keyPair = mIKeyStore.getKeyPair(mAliasKey)
         val encrypt = JSONArray(mSharedPrefs.getString(key, null))
-
-        Timber.d("{$encrypt}")
-        return prepareDecryptedMessage(mICipher.decrypt(keyPair, encrypt.getString(0)))
+        Timber.d("Message to be decrypt :$encrypt, length :${encrypt.length()}")
+        return prepareDecryptedMessage(encrypt)
     }
 
     private fun prepareEncryptedJsonArray(value: String): JSONArray {
         val keyPair = mIKeyStore.getKeyPair(mAliasKey)
-        val encrypt = mICipher.encrypt(keyPair, value)
+        val chunked = value.chunked(MESSAGE_BLOCK)
         val jsonArray = JSONArray();
-        jsonArray.put(encrypt)
-        Timber.d("Encrypted :{$encrypt}")
+        for (str in chunked) {
+            println("Chunk :$str")
+            val encrypt = mICipher.encrypt(keyPair, value)
+            jsonArray.put(encrypt)
+            Timber.d("Encrypted :{$encrypt}")
+        }
         return jsonArray;
     }
 
-    private fun prepareDecryptedMessage(value: String): String {
-        Timber.d("Decrypt :{$value}")
-        return value;
+    private fun prepareDecryptedMessage(value: JSONArray): String {
+        val keyPair = mIKeyStore.getKeyPair(mAliasKey)
+        val sb = StringBuilder()
+        for (str in 0..(value.length() - 1)) {
+            sb.append(mICipher.decrypt(keyPair, value.getString(str)))
+        }
+        Timber.d("Decrypt :{${sb}}")
+        return sb.toString();
     }
 }

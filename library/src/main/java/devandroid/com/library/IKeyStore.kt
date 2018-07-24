@@ -19,6 +19,8 @@ interface IKeyStore {
          * RSA is the only algorithm available on pre Marshmallow
          */
         const val ALGORITHM = "RSA"
+
+        const val MESSAGE_BLOCK = 240
     }
 
     /**

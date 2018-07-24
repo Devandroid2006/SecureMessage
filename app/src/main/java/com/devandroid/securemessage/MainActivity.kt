@@ -1,6 +1,7 @@
 package com.devandroid.securemessage
 
 import android.os.Bundle
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.widget.Toast
 import devandroid.com.library.ISecureMessage
@@ -24,6 +25,8 @@ class MainActivity : BaseActivity(), View.OnClickListener {
         encryptBtn.setOnClickListener(this)
         decryptBtn.setOnClickListener(this)
 
+        //set scrolling feature for textview
+        decryptedTV.movementMethod = ScrollingMovementMethod()
         //init secure instance
         mISecureMessage = SecureUtils.getSecurePreference(this, "sample.xml")
     }
@@ -35,8 +38,12 @@ class MainActivity : BaseActivity(), View.OnClickListener {
                 decryptedTV.setText("")
             }
             R.id.encryptBtn -> {
-                mISecureMessage.putString("message", plainET.text.toString())
-                Toast.makeText(this, "Saved successfully.", Toast.LENGTH_LONG).show()
+                if (!plainET.text.isBlank()) {
+                    mISecureMessage.putString("message", plainET.text.toString())
+                    Toast.makeText(this, "Saved successfully.", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(this, "Please Enter text.", Toast.LENGTH_LONG).show()
+                }
             }
             R.id.decryptBtn -> {
                 decryptedTV.setText(mISecureMessage.getString("message", "Null")
