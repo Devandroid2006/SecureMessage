@@ -19,7 +19,13 @@ class MainActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun initialize() {
-        plainET.setText("Enter Text to be encrypt and decrypt.")
+        val sb = StringBuilder();
+        //sample text to test
+        for (i in 0..20) {
+            sb.append("Enter sample Text to be encrypt and decrypt.")
+        }
+        plainET.setText(sb)
+
         //register click listeners
         resetBtn.setOnClickListener(this)
         encryptBtn.setOnClickListener(this)
