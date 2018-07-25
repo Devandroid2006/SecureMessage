@@ -6,8 +6,8 @@ import android.os.Build
 import android.security.KeyPairGeneratorSpec
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import android.util.Log
 import devandroid.com.library.IKeyStore
-import timber.log.Timber
 import java.math.BigInteger
 import java.security.KeyPair
 import java.security.KeyPairGenerator
@@ -23,6 +23,8 @@ import javax.security.auth.x500.X500Principal
  */
 class KeyStoreImpl : IKeyStore {
 
+    private val TAG = "KeyStoreImpl";
+
     private lateinit var mKeyStore: KeyStore;
 
     private lateinit var mContext: Context;
@@ -34,10 +36,12 @@ class KeyStoreImpl : IKeyStore {
     }
 
     override fun isExists(alias: String): Boolean {
+        Log.d(TAG, "isExists() called");
         return mKeyStore.isKeyEntry(alias)
     }
 
     override fun generateKeyPair(alias: String): KeyPair? {
+        Log.d(TAG, "generateKeyPair() called");
         val keyPairGenerator = KeyPairGenerator.getInstance(IKeyStore.ALGORITHM, IKeyStore.PROVIDER)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             initForMarshaMallow(keyPairGenerator, alias)
@@ -45,16 +49,17 @@ class KeyStoreImpl : IKeyStore {
             initForKitKat(keyPairGenerator, alias)
         }
         val keyPair = keyPairGenerator.generateKeyPair()
-        Timber.d(keyPair.toString())
         return keyPair;
     }
 
     override fun getKeyPair(alias: String): KeyPair? {
+        Log.d(TAG, "getKeyPair() called");
         return KeyPair(mKeyStore.getCertificate(alias).publicKey, mKeyStore.getKey(alias, null) as PrivateKey)
     }
 
 
     private fun initForKitKat(keyPairGenerator: KeyPairGenerator, alias: String) {
+        Log.d(TAG, "initForKitKat() called");
         val startTime = Calendar.getInstance().time;
         val endTime = Calendar.getInstance();
         endTime.add(Calendar.YEAR, 20);
@@ -72,6 +77,7 @@ class KeyStoreImpl : IKeyStore {
 
     @TargetApi(Build.VERSION_CODES.M)
     private fun initForMarshaMallow(keyPairGenerator: KeyPairGenerator, alias: String) {
+        Log.d(TAG, "initForMarshaMallow() called");
         val startTime = Calendar.getInstance().time;
         val endTime = Calendar.getInstance();
         endTime.add(Calendar.YEAR, 20);

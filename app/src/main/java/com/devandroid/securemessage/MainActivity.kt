@@ -23,13 +23,13 @@ class MainActivity : BaseActivity(), View.OnClickListener {
 
         mISecureMessage.putBoolean("boolean", false)
 
-        Timber.d("Message Boolean:" + mISecureMessage.getBoolean("boolean", false))
+        Timber.d("Message Boolean:${mISecureMessage.getBoolean("boolean", false)}")
 
         mISecureMessage.putLong("Long", 1000)
 
         mISecureMessage.putLong("Long", 200)
 
-        Timber.d("Message Long:" + mISecureMessage.getLong("Long", 2))
+        Timber.d("Message Long: ${mISecureMessage.getLong("Long", 2)}")
     }
 
     private fun initialize() {
