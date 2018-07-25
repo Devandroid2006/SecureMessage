@@ -34,12 +34,12 @@ class SecureMessageImpl : ISecureMessage {
     }
 
     override fun putString(key: String, value: String) {
-        Log.d(TAG, "putString: [key, value]");
+        Log.d(TAG, "putString: [$key, $value]");
         putEncryptedMessage(key, value)
     }
 
     override fun getString(key: String, default: String): String? {
-        Log.d(TAG, "getString: [key, default]");
+        Log.d(TAG, "getString: [$key, $default]");
         val decryptedMessage = getDecryptedMessage(key)
         return if (null == decryptedMessage) default else decryptedMessage
     }
@@ -50,40 +50,40 @@ class SecureMessageImpl : ISecureMessage {
     }
 
     override fun getInt(key: String, default: Int): Int {
-        Log.d(TAG, "getInt: [key, default]");
+        Log.d(TAG, "getInt: [$key, $default]");
         val decryptedMessage = getDecryptedMessage(key)
         return if (null == decryptedMessage) default else decryptedMessage.toInt()
     }
 
     override fun putBoolean(key: String, value: Boolean) {
-        Log.d(TAG, "putBoolean: [key, value]");
+        Log.d(TAG, "putBoolean: [$key, $value]");
         putEncryptedMessage(key, value.toString())
     }
 
     override fun getBoolean(key: String, default: Boolean): Boolean {
-        Log.d(TAG, "getBoolean: [key, default]");
+        Log.d(TAG, "getBoolean: [$key, $default]");
         val decryptedMessage = getDecryptedMessage(key)
         return if (null == decryptedMessage) default else decryptedMessage.toBoolean()
     }
 
     override fun putDouble(key: String, value: Double) {
-        Log.d(TAG, "putDouble: [key, value]");
+        Log.d(TAG, "putDouble: [$key, $value]");
         putEncryptedMessage(key, value.toString())
     }
 
     override fun getDouble(key: String, default: Double): Double {
-        Log.d(TAG, "getDouble: [key, default]");
+        Log.d(TAG, "getDouble: [$key, $default]");
         val decryptedMessage = getDecryptedMessage(key)
         return if (null == decryptedMessage) default else decryptedMessage.toDouble()
     }
 
     override fun putFloat(key: String, value: Float) {
-        Log.d(TAG, "putFloat: [key, value]");
+        Log.d(TAG, "putFloat: [$key, $value]");
         putEncryptedMessage(key, value.toString())
     }
 
     override fun getFloat(key: String, default: Float): Float {
-        Log.d(TAG, "getFloat: [key, default]");
+        Log.d(TAG, "getFloat: [$key, $default]");
         val decryptedMessage = getDecryptedMessage(key)
         return if (null == decryptedMessage) default else decryptedMessage.toFloat()
     }
@@ -93,25 +93,25 @@ class SecureMessageImpl : ISecureMessage {
     }
 
     override fun getLong(key: String, default: Long): Long {
-        Log.d(TAG, "getLong: [key, default]");
+        Log.d(TAG, "getLong: [$key, $default]");
         val decryptedMessage = getDecryptedMessage(key)
         return if (null == decryptedMessage) default else decryptedMessage.toLong()
     }
 
     private fun putEncryptedMessage(key: String, value: String) {
-        Log.d(TAG, "putEncryptedMessage: [key, value]");
+        Log.d(TAG, "putEncryptedMessage: [$key, $value]");
         mEditor.putString(key, prepareEncryptedJsonArray(value).toString());
         mEditor.commit()
     }
 
     private fun getDecryptedMessage(key: String): String {
-        Log.d(TAG, "getDecryptedMessage: [key]");
+        Log.d(TAG, "getDecryptedMessage: [$key]");
         val encrypt = JSONArray(mSharedPrefs.getString(key, null))
         return prepareDecryptedMessage(encrypt)
     }
 
     private fun prepareEncryptedJsonArray(value: String): JSONArray {
-        Log.d(TAG, "prepareEncryptedJsonArray: [value]");
+        Log.d(TAG, "prepareEncryptedJsonArray: [$value]");
         val keyPair = mIKeyStore.getKeyPair(mAliasKey)
         val chunked = value.chunked(MESSAGE_BLOCK)
         val jsonArray = JSONArray();
@@ -124,7 +124,7 @@ class SecureMessageImpl : ISecureMessage {
     }
 
     private fun prepareDecryptedMessage(value: JSONArray): String {
-        Log.d(TAG, "prepareDecryptedMessage: [value]");
+        Log.d(TAG, "prepareDecryptedMessage: [$value]");
         val keyPair = mIKeyStore.getKeyPair(mAliasKey)
         val sb = StringBuilder()
         for (str in 0..(value.length() - 1)) {
