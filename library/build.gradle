@@ -2,13 +2,28 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 android {
+    def file = file("version.properties")
+    def majorVer = 1
+    def minorVer = 0
+    def buildVer = 1
+    def targetVer = 18
+    def verName = "1.0.1"
+    if (file.canRead()) {
+        Properties versionProps = new Properties()
+        versionProps.load(new FileInputStream(file))
+        buildVer = versionProps.getProperty("MAJOR").toInteger()
+        minorVer = versionProps.getProperty("MINOR").toInteger()
+        buildVer = versionProps.getProperty("BUILD").toInteger()
+        targetVer = versionProps.getProperty("TARGET_SDK").toInteger()
+        verName = "" + majorVer + "." + minorVer + "." + buildVer
+    }
     compileSdkVersion 27
     defaultConfig {
         buildToolsVersion '27.0.3'
         minSdkVersion 18
-        targetSdkVersion 27
-        versionCode 1
-        versionName "1.0"
+        targetSdkVersion targetVer
+        versionCode buildVer
+        versionName verName
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
