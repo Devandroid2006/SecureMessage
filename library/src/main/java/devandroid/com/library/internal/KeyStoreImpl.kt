@@ -36,12 +36,12 @@ class KeyStoreImpl : IKeyStore {
     }
 
     override fun isExists(alias: String): Boolean {
-        Log.d(TAG, "isExists() called");
+        Log.d(TAG, "isExists: [alias]");
         return mKeyStore.isKeyEntry(alias)
     }
 
     override fun generateKeyPair(alias: String): KeyPair? {
-        Log.d(TAG, "generateKeyPair() called");
+        Log.d(TAG, "generateKeyPair: [alias]");
         val keyPairGenerator = KeyPairGenerator.getInstance(IKeyStore.ALGORITHM, IKeyStore.PROVIDER)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             initForMarshaMallow(keyPairGenerator, alias)
@@ -53,13 +53,13 @@ class KeyStoreImpl : IKeyStore {
     }
 
     override fun getKeyPair(alias: String): KeyPair? {
-        Log.d(TAG, "getKeyPair() called");
+        Log.d(TAG, "getKeyPair: [alias]");
         return KeyPair(mKeyStore.getCertificate(alias).publicKey, mKeyStore.getKey(alias, null) as PrivateKey)
     }
 
 
     private fun initForKitKat(keyPairGenerator: KeyPairGenerator, alias: String) {
-        Log.d(TAG, "initForKitKat() called");
+        Log.d(TAG, "initForKitKat: [keyPairGenerator, alias]");
         val startTime = Calendar.getInstance().time;
         val endTime = Calendar.getInstance();
         endTime.add(Calendar.YEAR, 20);
@@ -77,7 +77,7 @@ class KeyStoreImpl : IKeyStore {
 
     @TargetApi(Build.VERSION_CODES.M)
     private fun initForMarshaMallow(keyPairGenerator: KeyPairGenerator, alias: String) {
-        Log.d(TAG, "initForMarshaMallow() called");
+        Log.d(TAG, "initForMarshaMallow: [keyPairGenerator, alias]");
         val startTime = Calendar.getInstance().time;
         val endTime = Calendar.getInstance();
         endTime.add(Calendar.YEAR, 20);

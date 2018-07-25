@@ -20,13 +20,13 @@ class CipherImpl : ICipher {
     }
 
     override fun encrypt(keyPair: KeyPair?, message: String): String {
-        Log.d(TAG, "encrypt() called");
+        Log.d(TAG, "encrypt: [keyPair, message]");
         mCipher.init(Cipher.ENCRYPT_MODE, keyPair?.public)
         return Base64.encodeToString(mCipher.doFinal(message.toByteArray()), Base64.DEFAULT);
     }
 
     override fun decrypt(keyPair: KeyPair?, cipher: String): String {
-        Log.d(TAG, "decrypt() called");
+        Log.d(TAG, "decrypt: [keyPair, cipher]");
         val byteArray = Base64.decode(cipher, Base64.DEFAULT)
         mCipher.init(Cipher.DECRYPT_MODE, keyPair?.private)
         return String(mCipher.doFinal(byteArray));
